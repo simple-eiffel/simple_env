@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple_env - Environment Variables for Eiffel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="simple_* logo" class="logo">
+        </div>
+        <h1>simple_env</h1>
+        <p class="tagline">Environment Variables for Eiffel</p>
+        <div class="badges">
+            <span class="badge badge-rfc">Foundation Layer</span>
+            <span class="badge badge-version">v1.0.0</span>
+            <span class="badge badge-license">MIT</span>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#quick-start">Quick Start</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#api">API Reference</a></li>
+            <li><a href="https://github.com/ljr1981/simple_env">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                <strong>simple_env</strong> provides SCOOP-compatible environment variable access for
+                Eiffel applications. It wraps Win32 environment APIs through a clean C interface,
+                enabling reading, writing, and expansion of environment variables without threading
+                complications.
+            </p>
+            <p>
+                Part of the <strong>simple_*</strong> ecosystem of focused, single-purpose Eiffel libraries.
+            </p>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start</h2>
+            <h3>Installation</h3>
+            <pre><code>&lt;library name="simple_env" location="$SIMPLE_ENV\simple_env.ecf"/&gt;</code></pre>
+
+            <h3>Basic Usage</h3>
+            <pre><code>local
+    env: SIMPLE_ENV
+do
+    create env
+
+    -- Get an environment variable
+    if attached env.get ("PATH") as path then
+        print ("PATH = " + path + "%N")
+    end
+
+    -- Shortcut using bracket notation
+    if attached env ["USERPROFILE"] as profile then
+        print ("Profile: " + profile + "%N")
+    end
+
+    -- Set an environment variable
+    env.set ("MY_VAR", "my_value")
+    if env.last_operation_succeeded then
+        print ("Variable set successfully%N")
+    end
+
+    -- Check if variable exists
+    if env.has ("MY_VAR") then
+        print ("MY_VAR exists%N")
+    end
+
+    -- Expand environment strings
+    print (env.expand ("%USERPROFILE%\Documents") + "%N")
+    -- Output: C:\Users\John\Documents
+
+    -- Remove a variable
+    env.unset ("MY_VAR")
+end</code></pre>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Get</h4>
+                    <p>Read environment variable values</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Set</h4>
+                    <p>Create or update environment variables</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Unset</h4>
+                    <p>Remove environment variables</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Expand</h4>
+                    <p>Expand %VAR% references in strings</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="api">
+            <h2>API Reference</h2>
+
+            <h3>Access</h3>
+            <table>
+                <tr><th>Feature</th><th>Description</th></tr>
+                <tr><td><code>get (name): detachable STRING_32</code></td><td>Get value (Void if not found)</td></tr>
+                <tr><td><code>item alias "[]" (name)</code></td><td>Shortcut for <code>get</code></td></tr>
+            </table>
+
+            <h3>Status Report</h3>
+            <table>
+                <tr><th>Feature</th><th>Description</th></tr>
+                <tr><td><code>has (name)</code></td><td>Does environment variable exist?</td></tr>
+                <tr><td><code>last_operation_succeeded</code></td><td>Did the last set/unset succeed?</td></tr>
+            </table>
+
+            <h3>Modification</h3>
+            <table>
+                <tr><th>Feature</th><th>Description</th></tr>
+                <tr><td><code>set (name, value)</code></td><td>Set environment variable to value</td></tr>
+                <tr><td><code>put (value, name)</code></td><td>Alternative signature (HASH_TABLE style)</td></tr>
+                <tr><td><code>unset (name)</code></td><td>Remove environment variable</td></tr>
+            </table>
+
+            <h3>Expansion</h3>
+            <table>
+                <tr><th>Feature</th><th>Description</th></tr>
+                <tr><td><code>expand (string): STRING_32</code></td><td>Expand %VAR% references in string</td></tr>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>Part of the <a href="https://github.com/ljr1981">simple_*</a> library collection</p>
+        <p>Dependencies: base, encoding</p>
+        <p class="copyright">MIT License - Copyright (c) 2024-2025, Larry Rix</p>
+    </footer>
+</body>
+</html>

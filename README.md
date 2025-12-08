@@ -4,7 +4,7 @@
 
 # SIMPLE_ENV
 
-**[Documentation](https://ljr1981.github.io/simple_env/)**
+**[Documentation](https://simple-eiffel.github.io/simple_env/)**
 
 ### Environment Variable Library for Eiffel
 
@@ -42,7 +42,7 @@ SIMPLE_ENV provides SCOOP-compatible environment variable access for Eiffel appl
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/ljr1981/simple_env.git
+git clone https://github.com/simple-eiffel/simple_env.git
 ```
 
 2. Compile the C library:
@@ -218,8 +218,8 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Contact
 
 - **Author:** Larry Rix
-- **Repository:** https://github.com/ljr1981/simple_env
-- **Issues:** https://github.com/ljr1981/simple_env/issues
+- **Repository:** https://github.com/simple-eiffel/simple_env
+- **Issues:** https://github.com/simple-eiffel/simple_env/issues
 
 ---
 

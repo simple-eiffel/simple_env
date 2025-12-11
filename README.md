@@ -1,78 +1,60 @@
-# SIMPLE_ENV
+<p align="center">
+  <img src="https://raw.githubusercontent.com/simple-eiffel/claude_eiffel_op_docs/main/artwork/LOGO.png" alt="simple_ library logo" width="400">
+</p>
 
-SCOOP-compatible environment variable access using direct Win32 API calls with inline C.
+# simple_env
 
-## Features
+**[Documentation](https://simple-eiffel.github.io/simple_env/)** | **[GitHub](https://github.com/simple-eiffel/simple_env)**
 
-- Get environment variable values
-- Set and unset environment variables
-- Check if variables exist
-- Expand environment strings (e.g., "%USERPROFILE%\Documents")
-- Array-style access with `[]` operator
-- SCOOP-compatible for concurrent programming
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Eiffel](https://img.shields.io/badge/Eiffel-25.02-blue.svg)](https://www.eiffel.org/)
+[![Design by Contract](https://img.shields.io/badge/DbC-enforced-orange.svg)]()
+[![SCOOP](https://img.shields.io/badge/SCOOP-compatible-orange.svg)]()
 
-## Installation
+SCOOP-compatible environment variable access for Eiffel.
 
-Add to your ECF file:
+Part of the [Simple Eiffel](https://github.com/simple-eiffel) ecosystem.
 
-```xml
-<library name="simple_env" location="$SIMPLE_ENV/simple_env.ecf"/>
-```
+## Status
 
-Set the environment variable:
-```
-SIMPLE_ENV=/path/to/simple_env
-```
+**Production**
 
-## Quick Start
+## Overview
+
+SIMPLE_ENV provides direct Win32 API calls with inline C for reliable, thread-safe environment manipulation. Unlike EXECUTION_ENVIRONMENT, it has no shared state issues.
 
 ```eiffel
 local
     env: SIMPLE_ENV
-    path: detachable STRING_32
 do
     create env
-
-    -- Get a variable
-    path := env.get ("PATH")
-
-    -- Or use array notation
-    path := env ["PATH"]
-
-    -- Set a variable
-    env.set ("MY_VAR", "my_value")
-
-    -- Check existence
-    if env.has ("HOME") then
-        print ("HOME is set%N")
+    if attached env.get ("PATH") as path then
+        print (path)
     end
-
-    -- Expand environment strings
-    print (env.expand ("%%USERPROFILE%%\Documents"))
-
-    -- Remove a variable
-    env.unset ("MY_VAR")
+    env.set ("MY_VAR", "my_value")
+    print (env.expand ("%USERPROFILE%\Documents"))
 end
 ```
 
-## API Overview
+## Features
 
-### SIMPLE_ENV
+- **Get & Set** - Read, write, delete environment variables
+- **String Expansion** - Expand %VAR% references in paths
+- **Enumeration** - List all variables or filter by prefix
+- **SCOOP Safe** - No shared state, concurrent-ready
+- **Array Access** - Use `env["PATH"]` notation
 
-| Feature | Description |
-|---------|-------------|
-| `get (name)` | Get environment variable value |
-| `item [name]` | Array-style access (alias for get) |
-| `has (name)` | Check if variable exists |
-| `set (name, value)` | Set environment variable |
-| `put (value, name)` | Set variable (HASH_TABLE style) |
-| `unset (name)` | Remove environment variable |
-| `expand (string)` | Expand %VAR% references in string |
-| `last_operation_succeeded` | Status of last set/unset |
+## Installation
 
-## Documentation
+1. Set environment variable:
+```bash
+export SIMPLE_ENV=/path/to/simple_env
+```
 
-- [API Documentation](https://simple-eiffel.github.io/simple_env/)
+2. Add to ECF:
+```xml
+<library name="simple_env" location="$SIMPLE_ENV/simple_env.ecf"/>
+```
 
 ## Platform
 
@@ -80,8 +62,4 @@ Windows (uses Win32 API)
 
 ## License
 
-MIT License - see LICENSE file for details.
-
-## Author
-
-Larry Rix
+MIT License

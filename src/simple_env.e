@@ -12,7 +12,11 @@ class
 
 feature -- Access
 
-	get (a_name: READABLE_STRING_GENERAL): detachable STRING_32
+	get,
+	value,
+	read,
+	fetch,
+	lookup (a_name: READABLE_STRING_GENERAL): detachable STRING_32
 			-- Get value of environment variable `a_name'.
 			-- Returns Void if variable doesn't exist.
 		require
@@ -39,7 +43,10 @@ feature -- Access
 
 feature -- Status Report
 
-	has (a_name: READABLE_STRING_GENERAL): BOOLEAN
+	has,
+	exists,
+	is_defined,
+	contains (a_name: READABLE_STRING_GENERAL): BOOLEAN
 			-- Does environment variable `a_name' exist?
 		require
 			name_not_empty: not a_name.is_empty
@@ -52,7 +59,10 @@ feature -- Status Report
 
 feature -- Modification
 
-	set (a_name: READABLE_STRING_GENERAL; a_value: READABLE_STRING_GENERAL)
+	set,
+	put_value,
+	store,
+	define (a_name: READABLE_STRING_GENERAL; a_value: READABLE_STRING_GENERAL)
 			-- Set environment variable `a_name' to `a_value'.
 		require
 			name_not_empty: not a_name.is_empty
@@ -75,7 +85,10 @@ feature -- Modification
 			set (a_name, a_value)
 		end
 
-	unset (a_name: READABLE_STRING_GENERAL)
+	unset,
+	remove,
+	delete_var,
+	clear_var (a_name: READABLE_STRING_GENERAL)
 			-- Remove environment variable `a_name'.
 		require
 			name_not_empty: not a_name.is_empty
@@ -90,7 +103,10 @@ feature -- Modification
 
 feature -- Expansion
 
-	expand (a_string: READABLE_STRING_GENERAL): STRING_32
+	expand,
+	expand_variables,
+	substitute,
+	resolve (a_string: READABLE_STRING_GENERAL): STRING_32
 			-- Expand environment variables in `a_string'.
 			-- E.g., "%USERPROFILE%\Documents" -> "C:\Users\John\Documents"
 		require
@@ -111,7 +127,10 @@ feature -- Expansion
 
 feature -- Enumeration
 
-	all_names: ARRAYED_LIST [STRING_32]
+	all_names,
+	list,
+	keys,
+	variables: ARRAYED_LIST [STRING_32]
 			-- All environment variable names.
 		local
 			l_ptr: POINTER

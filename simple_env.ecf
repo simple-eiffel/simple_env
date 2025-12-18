@@ -16,13 +16,13 @@
 			<concurrency support="scoop" use="thread"/>
 			<void_safety support="all"/>
 		</capability>
-		<external_include location="$(SIMPLE_EIFFEL)/simple_env/Clib"/>
-		<external_object location="$(SIMPLE_EIFFEL)/simple_env/Clib/simple_env.obj">
+		<external_include location="$SIMPLE_EIFFEL/simple_env/Clib"/>
+		<external_object location="$SIMPLE_EIFFEL/simple_env/Clib/simple_env.obj">
 			<condition>
 				<platform value="windows"/>
 			</condition>
 		</external_object>
-		<external_object location="$(SIMPLE_EIFFEL)/simple_env/Clib/simple_env.o">
+		<external_object location="$SIMPLE_EIFFEL/simple_env/Clib/simple_env.o">
 			<condition>
 				<platform excluded_value="windows"/>
 			</condition>

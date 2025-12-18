@@ -183,7 +183,7 @@ static int se_env_exists(const char* name) {
 #endif /* _WIN32 */
 
 /* Declarations for functions implemented in simple_env.c */
-char* se_get_all_names(void);
-char* se_get_names_with_prefix(const char* prefix);
+void* se_get_all_names(void);
+void* se_get_names_with_prefix(void* prefix);
 
 #endif /* SIMPLE_ENV_H */

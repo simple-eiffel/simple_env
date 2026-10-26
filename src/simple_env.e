@@ -208,6 +208,47 @@ feature -- Status
 	last_operation_succeeded: BOOLEAN
 			-- Did the last set/unset operation succeed?
 
+feature -- Program
+
+	executable_path: STRING_32
+			-- Full path of the running program (GetModuleFileNameW), whatever folder it was
+			-- started from or found through PATH. Lets a program find files installed beside it.
+		local
+			l_buffer: MANAGED_POINTER
+			l_count: INTEGER
+		do
+			create l_buffer.make (Max_path_chars * 2 + 2)
+			l_count := c_module_file_name (l_buffer.item, Max_path_chars)
+			if l_count > 0 and l_count < Max_path_chars then
+				Result := (create {NATIVE_STRING}.make_from_pointer (l_buffer.item)).string
+			else
+				create Result.make_empty
+			end
+		ensure
+			found: not Result.is_empty
+		end
+
+	executable_folder: STRING_32
+			-- The folder that holds the running program, without a trailing separator.
+		local
+			l_path: STRING_32
+			l_cut: INTEGER
+		do
+			l_path := executable_path
+			l_cut := l_path.last_index_of ('\', l_path.count).max (l_path.last_index_of ('/', l_path.count))
+			if l_cut > 1 then
+				Result := l_path.substring (1, l_cut - 1)
+			else
+				Result := l_path
+			end
+		ensure
+			found: not Result.is_empty
+			prefix_of_path: executable_path.starts_with (Result)
+		end
+
+	Max_path_chars: INTEGER = 32768
+			-- The longest path Windows returns (in UTF-16 units).
+
 feature {NONE} -- Implementation
 
 	pointer_to_string (a_ptr: POINTER): STRING_32
@@ -220,6 +261,12 @@ feature {NONE} -- Implementation
 		end
 
 feature {NONE} -- C externals (using simple_env.h)
+
+	c_module_file_name (a_buffer: POINTER; a_size: INTEGER): INTEGER
+			-- GetModuleFileNameW for this process into `a_buffer' (`a_size' UTF-16 units); the length, 0 on failure.
+		external "C inline use <windows.h>"
+		alias "return (EIF_INTEGER) GetModuleFileNameW (NULL, (LPWSTR) $a_buffer, (DWORD) $a_size);"
+		end
 
 	c_se_get_env (a_name: POINTER): POINTER
 			-- Get environment variable value. Caller must free result.

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `executable_path` and `executable_folder`: the running program's own path (GetModuleFileNameW), so a program finds files installed beside it whatever folder it was started from or found through PATH (simple_bible's `bible` command line, 2026-10-26). The test app checks it with a plain comparison, since `check` is vacuous in finalized builds.
+
 ### Changed
 - Post-session update 2025-12-08 20:52
 - Post-session update 2025-12-08 20:45

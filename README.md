@@ -48,7 +48,7 @@ end
 
 1. Set environment variable (one-time setup for all simple_* libraries):
 ```bash
-export SIMPLE_EIFFEL=D:\prod
+export SIMPLE_EIFFEL=<the folder holding your simple_* libraries>
 ```
 
 2. Add to ECF:

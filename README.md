@@ -56,6 +56,13 @@ export SIMPLE_EIFFEL=<the folder holding your simple_* libraries>
 <library name="simple_env" location="$SIMPLE_EIFFEL/simple_env/simple_env.ecf"/>
 ```
 
+## Building the C object
+
+The C object is not in the repository, so build it once after checkout, before compiling anything that uses simple_env.
+
+- Windows, from an MSVC developer prompt: `cd Clib` then `cl /nologo /c /O2 /MT simple_env.c`, which writes `simple_env.obj`.
+- macOS and Linux: `make -C Clib`, which writes `simple_env.o`.
+
 ## Platform
 
 Windows (uses Win32 API)

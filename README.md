@@ -65,7 +65,7 @@ The C object is not in the repository, so build it once after checkout, before c
 
 ## Platform
 
-Windows (uses Win32 API)
+Windows, macOS and Linux
 
 ## License
 

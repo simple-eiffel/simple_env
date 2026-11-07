@@ -62,6 +62,11 @@ static char* se_expand_env(const char* input) {
     return result;
 }
 
+/* Full path of the running program into a_buffer as UTF-16; length in units, 0 on failure. */
+static int se_module_file_name(void* a_buffer, int a_size) {
+    return (int) GetModuleFileNameW(NULL, (LPWSTR) a_buffer, (DWORD) a_size);
+}
+
 /* Check if variable exists. Returns 1 if exists, 0 otherwise. */
 static int se_env_exists(const char* name) {
     if (!name) return 0;
@@ -72,6 +77,10 @@ static int se_env_exists(const char* name) {
 /* ============ POSIX IMPLEMENTATION (Linux/macOS) ============ */
 
 #include <unistd.h>
+#include <stdint.h>
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
 
 extern char **environ;
 
@@ -172,6 +181,39 @@ static char* se_expand_env(const char* input) {
     }
     *out = '\0';
     return result;
+}
+
+/* Full path of the running program into a_buffer as UTF-8; length in bytes, 0 on failure. */
+static int se_module_file_name(void* a_buffer, int a_size) {
+    char* out = (char*) a_buffer;
+#ifdef __APPLE__
+    uint32_t size = 0;
+    char* raw;
+    char* real;
+    int length = 0;
+    _NSGetExecutablePath(NULL, &size);
+    raw = (char*) malloc(size);
+    if (!raw) return 0;
+    if (_NSGetExecutablePath(raw, &size) == 0) {
+        real = realpath(raw, NULL);
+        if (real) {
+            length = (int) strlen(real);
+            if (length < a_size) {
+                memcpy(out, real, (size_t) length + 1);
+            } else {
+                length = 0;
+            }
+            free(real);
+        }
+    }
+    free(raw);
+    return length;
+#else
+    ssize_t length = readlink("/proc/self/exe", out, (size_t) a_size - 1);
+    if (length <= 0) return 0;
+    out[length] = '\0';
+    return (int) length;
+#endif
 }
 
 /* Check if variable exists. Returns 1 if exists, 0 otherwise. */

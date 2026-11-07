@@ -49,7 +49,7 @@ feature -- Initialization
 			print ("executable_path = ")
 			print (l_env.executable_path)
 			print ("%N")
-			if not l_env.executable_path.as_lower.ends_with (".exe")
+			if ({PLATFORM}.is_windows and not l_env.executable_path.as_lower.ends_with (".exe"))
 				or not l_env.executable_path.starts_with (l_env.executable_folder)
 				or l_env.executable_folder.count >= l_env.executable_path.count
 			then

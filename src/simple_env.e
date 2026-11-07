@@ -211,7 +211,7 @@ feature -- Status
 feature -- Program
 
 	executable_path: STRING_32
-			-- Full path of the running program (GetModuleFileNameW), whatever folder it was
+			-- Full path of the running program, whatever folder it was
 			-- started from or found through PATH. Lets a program find files installed beside it.
 		local
 			l_buffer: MANAGED_POINTER
@@ -247,7 +247,7 @@ feature -- Program
 		end
 
 	Max_path_chars: INTEGER = 32768
-			-- The longest path Windows returns (in UTF-16 units).
+			-- The longest path asked for, in native units.
 
 feature {NONE} -- Implementation
 
@@ -263,9 +263,10 @@ feature {NONE} -- Implementation
 feature {NONE} -- C externals (using simple_env.h)
 
 	c_module_file_name (a_buffer: POINTER; a_size: INTEGER): INTEGER
-			-- GetModuleFileNameW for this process into `a_buffer' (`a_size' UTF-16 units); the length, 0 on failure.
-		external "C inline use <windows.h>"
-		alias "return (EIF_INTEGER) GetModuleFileNameW (NULL, (LPWSTR) $a_buffer, (DWORD) $a_size);"
+			-- This program's path into `a_buffer' in the native encoding (room for `a_size' units);
+			-- the length, 0 on failure.
+		external "C inline use %"simple_env.h%""
+		alias "return (EIF_INTEGER) se_module_file_name ((void *) $a_buffer, (int) $a_size);"
 		end
 
 	c_se_get_env (a_name: POINTER): POINTER
